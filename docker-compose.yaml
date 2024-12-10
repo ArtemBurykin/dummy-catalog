@@ -1,0 +1,20 @@
+services:
+  back:
+    image: golang:1.23-alpine
+    volumes:
+      - ./backend:/usr/src/server
+    working_dir: /usr/src/server
+    expose:
+      - 8080
+    ports:
+      - ${BACK_PORT}:8080
+    command: sh -c "go build -o ./build/server server.go && ./build/server"
+
+  vue:
+    image: node:22-alpine
+    volumes:
+      - ./vue:/usr/src
+    working_dir: /usr/src
+    ports:
+      - ${VUE_PORT}:5173
+    command: sh -c "npm run dev -- --host vue"
