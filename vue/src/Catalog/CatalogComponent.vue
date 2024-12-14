@@ -83,7 +83,7 @@ const goToPage = (page: number) => {
   <section class="catalog-page">
     <div class="catalog-page__filter filter">
       <label for="title">Title:</label>
-      <input type="text" name="title" v-model="titleFilter" />
+      <input type="text" name="title" id="title" v-model="titleFilter" />
       <div @click="submitFilter" class="filter__btn">Search</div>
     </div>
 

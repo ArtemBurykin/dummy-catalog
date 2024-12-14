@@ -18,3 +18,12 @@ services:
     ports:
       - ${VUE_PORT}:5173
     command: sh -c "npm run dev -- --host vue"
+
+  angular:
+    image: node:22-alpine
+    volumes:
+      - ./angular:/usr/src
+    working_dir: /usr/src
+    ports:
+      - ${ANGULAR_PORT}:4200
+    command: sh -c "npm start"

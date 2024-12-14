@@ -1,0 +1,29 @@
+<main class="main">
+  <section class="catalog-page">
+    <div class="catalog-page__filter filter">
+      <label for="title">Title:</label>
+      <input type="text" name="title" id="title" [formControl]="titleFormControl"/>
+      <div class="filter__btn" (click)="submitFilter()">Search</div>
+    </div>
+
+    <div class="catalog-page__list">
+      @if(items$().isLoading) {
+        <p>Loading...</p>
+      }
+
+      @else if (items$().data.length === 0) {
+        <p>No items found..</p>
+      }
+
+      @else {
+        <div class="items-list">
+          @for (item of items$().data; track item.id) {
+            <div class="items-list__item">
+              {{ item.title }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+</main>
