@@ -5,12 +5,13 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { map, Subject, switchMap, tap } from 'rxjs';
 import { ItemsResponse } from './items-response';
 import { ItemsResource } from './items-resourse';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [ReactiveFormsModule]
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class AppComponent {
   private route = inject(ActivatedRoute);
@@ -20,16 +21,20 @@ export class AppComponent {
   items$ = signal<ItemsResource>({
     isLoading: true,
     data: [],
-    error: null
+    error: null,
+    pages: [],
   });
 
+  currentPage = signal<number>(1);
   titleFormControl = new FormControl('');
-
-  httpParams$ = new Subject<{ title: string, page: string }>();
 
   ngOnInit() {
     this.route.queryParamMap.pipe(
       tap(params => this.titleFormControl.setValue(params.get('title'))),
+      tap(params => {
+        const page = params.get('page') || '1';
+        this.currentPage.set(+page)
+      }),
       map(params => ({ title: params.get('title') || '', page: params.get('page') || '1' })),
       switchMap(params => {
         const query = new HttpParams({ fromObject: params });
@@ -41,12 +46,17 @@ export class AppComponent {
             isLoading: false,
             data: itemsResponse.items,
             error: null,
-          })
+            pages: Array.from({length: itemsResponse.pages}, (_, i) => i + 1),
+          });
         },
     });
   }
 
   submitFilter() {
     this.router.navigate([], { queryParams: { title: this.titleFormControl.value, page: 1 } });
+  }
+
+  goToPage(page: number) {
+    this.router.navigate([], { queryParams: { title: this.titleFormControl.value, page } });
   }
 }
