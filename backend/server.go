@@ -9,7 +9,6 @@ import (
 )
 
 const pageSize = 5
-const totalElements = 20
 
 type Product struct {
     Id   int    `json:"id"`
@@ -24,7 +23,7 @@ type RespData struct {
 func createProductsStore() []Product {
   var data []Product
 
-  for i := 0; i < totalElements; i++ {
+  for i := 0; i < 20; i++ {
     idx := i + 1
     product := Product{idx, "light bulb " + strconv.Itoa(idx)}
     data = append(data, product)
@@ -77,7 +76,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 
     pageData := getItemsPage(data, page)
 
-    respData := RespData{pageData, totalElements / pageSize }
+    respData := RespData{pageData, len(data) / pageSize }
 
     jsdata, err := json.Marshal(respData)
     if err != nil {
