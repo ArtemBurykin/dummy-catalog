@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
-import CatalogComponent from './Catalog/CatalogComponent.vue'
-
-const routes: RouteRecordRaw[] = [{ path: '/', component: CatalogComponent }]
+import { createWebHistory, createRouter } from 'vue-router'
+import { routes } from './routes'
 
 const router = createRouter({
   history: createWebHistory(),

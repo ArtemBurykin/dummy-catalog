@@ -42,11 +42,19 @@ const fetchData = (title: string, page: string) => {
     .then((res) => {
       return res.json()
     })
-    .then((respData: CatalogResponse) => {
-      itemsResource.value = {
-        isLoading: false,
-        error: null,
-        data: respData.items,
+    .then((respData: CatalogResponse & { error: string }) => {
+      if (typeof respData.error !== 'undefined') {
+        itemsResource.value = {
+          isLoading: false,
+          error: respData.error,
+          data: respData.items,
+        }
+      } else {
+        itemsResource.value = {
+          isLoading: false,
+          error: null,
+          data: respData.items,
+        }
       }
 
       pagesCount.value = respData.pages
@@ -88,7 +96,7 @@ const goToPage = (page: number) => {
     </div>
 
     <div class="catalog-page__list">
-      <div v-if="!itemsResource.isLoading">
+      <div v-if="!itemsResource.isLoading && !itemsResource.error">
         <p v-if="!itemsResource.data.length">No items found</p>
         <div class="items-list">
           <div v-for="item in itemsResource.data" :key="item.id" class="items-list__item">
@@ -108,6 +116,7 @@ const goToPage = (page: number) => {
         </div>
       </div>
       <div v-if="itemsResource.isLoading">Loading..</div>
+      <div v-if="itemsResource.error">{{ itemsResource.error }}</div>
     </div>
   </section>
 </template>
