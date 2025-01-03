@@ -11,6 +11,10 @@
       <p>Loading...</p>
       }
 
+      @else if (items$().error) {
+      <p>{{ items$().error }}</p>
+      }
+
       @else if (items$().data.length === 0) {
       <p>No items found..</p>
       }
@@ -26,10 +30,8 @@
 
       <div class="catalog-page__pagination pagination">
         @for (page of items$().pages; track page) {
-        <div class="pagination__page"
-          [ngClass]="{'pagination__page--active': currentPage() === page}"
-          (click)="goToPage(page)"
-        >
+        <div class="pagination__page" [ngClass]="{'pagination__page--active': currentPage() === page}"
+          (click)="goToPage(page)">
           {{ page }}
         </div>
         }
