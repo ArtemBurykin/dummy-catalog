@@ -1,9 +1,10 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AppComponent', () => {
   let harness: RouterTestingHarness;
@@ -13,8 +14,9 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
+        provideZonelessChangeDetection(),
         provideRouter([{ path: '', component: AppComponent }]),
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();
@@ -75,7 +77,7 @@ describe('AppComponent', () => {
     expect(harness.routeNativeElement?.innerHTML).toContain('No items found');
   });
 
-  it('should navigate to the page', fakeAsync(async () => {
+  it('should navigate to the page', async () => {
     await harness.navigateByUrl('/?title=test&page=1', AppComponent);
 
     const req = httpTesting.expectOne({
@@ -85,12 +87,12 @@ describe('AppComponent', () => {
 
     req.flush({ items: [{ id: '1', title: 'test 1' }], pages: 2 });
 
-    harness.detectChanges();
+    await harness.fixture.whenStable();
 
     const pageBtn = harness.routeNativeElement!.querySelectorAll('.pagination__page')[1] as HTMLElement;
     pageBtn.click();
 
-    tick();
+    await harness.fixture.whenStable();
 
     const req2 = httpTesting.expectOne({
       method: 'GET',
@@ -99,11 +101,11 @@ describe('AppComponent', () => {
 
     req2.flush({ items: [{ id: '2', title: 'test 2' }], pages: 2 });
 
-    harness.detectChanges();
+    await harness.fixture.whenStable();
     expect(harness.routeNativeElement?.innerHTML).toContain('test 2');
-  }));
+  });
 
-  it('should apply the title filter', fakeAsync(async () => {
+  it('should apply the title filter', async () => {
     await harness.navigateByUrl('/?title=test&page=1', AppComponent);
 
     const req = httpTesting.expectOne({
@@ -113,7 +115,7 @@ describe('AppComponent', () => {
 
     req.flush({ items: [{ id: '1', title: 'test 1' }], pages: 2 });
 
-    harness.detectChanges();
+    await harness.fixture.whenStable();
 
     const filterInput = harness.routeNativeElement!.querySelector('#title') as HTMLInputElement;
     filterInput.value = 'te';
@@ -122,7 +124,7 @@ describe('AppComponent', () => {
     const filterBtn = harness.routeNativeElement!.querySelector('.filter__btn') as HTMLElement;
     filterBtn.click();
 
-    tick();
+    await harness.fixture.whenStable();
 
     const req2 = httpTesting.expectOne({
       method: 'GET',
@@ -131,7 +133,7 @@ describe('AppComponent', () => {
 
     req2.flush({ items: [{ id: '2', title: 'test 2' }], pages: 2 });
 
-    harness.detectChanges();
+    await harness.fixture.whenStable();
     expect(harness.routeNativeElement?.innerHTML).toContain('test 2');
-  }));
+  });
 });
