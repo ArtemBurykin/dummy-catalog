@@ -21,9 +21,7 @@ services:
     command: sh -c "npm run dev -- --host vue"
 
   angular:
-    build:
-      context: ./
-      dockerfile: ./docker/angular/Dockerfile
+    image: node:24.15-alpine
     volumes:
       - ./angular:/usr/src
     working_dir: /usr/src

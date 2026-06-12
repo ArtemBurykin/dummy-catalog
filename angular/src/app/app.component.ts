@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class AppComponent {
