@@ -1,0 +1,44 @@
+<main class="main">
+  <section class="catalog-page">
+    <div class="catalog-page__filter filter">
+      <label for="title">Title:</label>
+      <input type="text" name="title" id="title" [(ngModel)]="titleModel"/>
+      <div class="filter__btn" (click)="submitFilter()">Search</div>
+    </div>
+
+    <div class="catalog-page__list">
+      @if (itemsResource.hasValue()) {
+        @let data = itemsResource.value();
+        @if (data.items.length === 0) {
+          <p>No items found..</p>
+        }
+        @else {
+          <div class="items-list">
+            @for (item of data.items; track item.id) {
+              <div class="items-list__item">
+                {{ item.title }}
+              </div>
+            }
+          </div>
+
+          <div class="catalog-page__pagination pagination">
+            @for (p of pages(); track p) {
+            <div class="pagination__page" [ngClass]="{'pagination__page--active': page() === p}"
+              (click)="goToPage(p)">
+              {{ p }}
+            </div>
+            }
+          </div>
+        }
+      }
+
+      @else if(itemsResource.isLoading()) {
+        <p>Loading...</p>
+      }
+
+      @else if (itemsResource.error()) {
+        <p>{{ errorMessage() }}</p>
+      }
+    </div>
+  </section>
+</main>

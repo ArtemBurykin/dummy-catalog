@@ -20,11 +20,20 @@ services:
       - ${VUE_PORT}:5173
     command: sh -c "npm run dev -- --host vue"
 
-  angular:
+  angular-rxjs:
     image: node:24.15-alpine
     volumes:
-      - ./angular:/usr/src
+      - ./angular-rxjs:/usr/src
     working_dir: /usr/src
     ports:
-      - ${ANGULAR_PORT}:4200
+      - ${ANGULAR_RXJS_PORT}:4200
+    command: sh -c "npm start"
+
+  angular-signal:
+    image: node:24.15-alpine
+    volumes:
+      - ./angular-signal:/usr/src
+    working_dir: /usr/src
+    ports:
+      - ${ANGULAR_SIGNAL_PORT}:4200
     command: sh -c "npm start"
