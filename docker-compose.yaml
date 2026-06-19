@@ -37,3 +37,14 @@ services:
     ports:
       - ${ANGULAR_SIGNAL_PORT}:4200
     command: sh -c "npm start"
+
+  next:
+    image: node:24.15-alpine
+    volumes:
+      - ./next:/usr/src
+    working_dir: /usr/src
+    environment:
+      BACK_URL: http://back:8080
+    ports:
+      - ${NEXT_PORT}:3000
+    command: sh -c "npm run dev"

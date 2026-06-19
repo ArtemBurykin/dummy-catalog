@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.items-list__item {
+  @apply p-1 w-30 border text-center;
+}
+
+.pagination__btn {
+  @apply border p-1 w-8 text-center cursor-pointer;
+}
+.primary-btn {
+  @apply mt-2 border p-2 text-center cursor-pointer;
+}
+.input {
+  @apply p-2 border;
+}
