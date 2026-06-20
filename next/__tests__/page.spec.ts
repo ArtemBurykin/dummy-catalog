@@ -35,6 +35,8 @@ describe('CatalogPage', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0][0]).toContain('/api/items?title=test&page=1');
     expect(screen.queryByText('test 1')).toBeTruthy();
+    const pageBtn = screen.getByText('1');
+    expect(pageBtn.classList).toContain('pagination__btn--active');
   })
 
   it('should show an error if occurred', async () => {

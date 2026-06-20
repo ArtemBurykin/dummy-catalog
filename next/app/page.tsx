@@ -38,7 +38,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
   const renderPagination = (pages: string[]) => {
     return (
       <div className="flex gap-5 mt-2 pagination">
-        {pages.map(p => (<PageBtn key={p} page={p} />))}
+        {pages.map(p => (<PageBtn key={p} page={p} isActive={p === page} />))}
       </div>
     );
   }

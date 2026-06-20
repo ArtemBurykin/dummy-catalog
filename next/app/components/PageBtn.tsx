@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function PageBtn({ page }: { page: string }) {
+export default function PageBtn({ page, isActive }: { page: string, isActive: boolean}) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -11,5 +11,8 @@ export default function PageBtn({ page }: { page: string }) {
     router.push(`?title=${title}&page=${page}`);
   }
 
-  return (<div className="pagination__btn" onClick={() => redirectToPage(page)}> { page } </div>);
+  let elCls = 'pagination__btn';
+  elCls += isActive ? ' pagination__btn--active' : '';
+
+  return (<div className={elCls} onClick={() => redirectToPage(page)}> { page } </div>);
 }

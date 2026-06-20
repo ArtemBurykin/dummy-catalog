@@ -7,6 +7,10 @@
 .pagination__btn {
   @apply border p-1 w-8 text-center cursor-pointer;
 }
+.pagination__btn--active {
+  background: aquamarine;
+}
+
 .primary-btn {
   @apply mt-2 border p-2 text-center cursor-pointer;
 }
