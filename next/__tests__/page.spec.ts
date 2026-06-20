@@ -1,14 +1,16 @@
 import { describe, it, beforeEach, vitest, afterEach, expect } from 'vitest'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event';
+import { cleanup, render, screen } from '@testing-library/react'
 import CatalogPage from '../app/page';
-import { redirect } from 'next/navigation';
 
-vitest.mock('next/navigation', () => ({
-  redirect: vitest.fn(),
+vitest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vitest.fn(),
+  }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
 }));
 
-describe('CatalogComponent', () => {
+describe('CatalogPage', () => {
   const fetchMock = vitest.fn()
 
   beforeEach(() => {

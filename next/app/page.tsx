@@ -1,3 +1,4 @@
+import PageBtn from "./components/PageBtn";
 import { ItemsResponse } from "./items-response";
 import Form from 'next/form';
 
@@ -37,7 +38,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
   const renderPagination = (pages: string[]) => {
     return (
       <div className="flex gap-5 mt-2 pagination">
-        {pages.map(p => (<div className="pagination__btn" key={p}>{p}</div>))}
+        {pages.map(p => (<PageBtn key={p} page={p} />))}
       </div>
     );
   }
@@ -49,7 +50,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
           <div className="w-70 border-r-1">
             <Form action="">
               <label htmlFor="title">Title:</label>
-              <input className="input" type="text" name="title" id="title" defaultValue={title}/>
+              <input className="input" type="text" name="title" id="title" defaultValue={title} />
               <button className="primary-btn">Search</button>
             </Form>
           </div>
